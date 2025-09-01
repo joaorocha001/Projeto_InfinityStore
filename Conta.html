@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minha Conta</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Arial", sans-serif;
+        background-color: #f9f9f9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .page {
+        background-color: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        width: 360px;
+        text-align: center;
+      }
+
+      .header h1 {
+        margin: 0;
+        color: #333;
+        font-size: 24px;
+        font-weight: 600;
+      }
+
+      .profile-pic {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #3c096c;
+        margin: 20px 0;
+        cursor: pointer;
+        transition: transform 0.3s, border-color 0.3s;
+      }
+
+      .profile-pic:hover {
+        transform: scale(1.05);
+        border-color: #2b0740;
+      }
+
+      .user-info {
+        margin: 20px 0;
+        text-align: left;
+      }
+
+      .user-info p {
+        font-size: 15px;
+        margin: 12px 0;
+        color: #555;
+      }
+
+      .btn,
+      .logout-btn,
+      .return-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(90deg, #3c096c, #9d4edd);
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+        color: white;
+        font-weight: bold;
+        transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      }
+
+      .btn:hover,
+      .logout-btn:hover,
+      .return-btn:hover {
+        background: linear-gradient(90deg, #2b0740, #7b2cbf);
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      footer {
+        margin-top: 20px;
+        font-size: 12px;
+        color: #aaa;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="header">
+        <h1>Informações do Usuário</h1>
+      </div>
+
+      <img
+        src="https://www.esportelandia.com.br/app/uploads/2024/05/Dwaney-Johnson-The-Rock-Mark-Kerr.png"
+        alt="Foto do Usuário"
+        class="profile-pic"
+        id="fotoUsuario"
+        onclick="document.getElementById('fileInput').click();"
+      />
+      <input type="file" id="fileInput" onchange="changePhoto()" />
+
+      <div class="user-info">
+        <p><strong>Nome:</strong> <span id="nomeUsuario"></span></p>
+        <p><strong>E-mail:</strong> <span id="emailUsuario"></span></p>
+      </div>
+
+      <div class="botoes-container">
+        <button class="logout-btn" onclick="logoutBtn()">Sair da Conta</button>
+        <button class="return-btn" onclick="returnBtn()">
+          Retornar às Compras
+        </button>
+      </div>
+
+      <footer>© 2025 Infinity Store</footer>
+    </div>
+
+    <script>
+      const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+      if (!usuario) {
+        alert("Você precisa estar logado para acessar!");
+        location.href = "TelaLogin.html";
+      } else {
+        document.getElementById("nomeUsuario").innerText = usuario.nome;
+        document.getElementById("emailUsuario").innerText = usuario.email;
+
+        const fotoSalva = localStorage.getItem("fotoUsuario");
+        if (fotoSalva) {
+          document.getElementById("fotoUsuario").src = fotoSalva;
+        }
+      }
+
+      function logoutBtn() {
+        localStorage.removeItem("usuarioLogado");
+        alert("Você saiu da conta!");
+        location.href = "TelaLogin.html";
+      }
+
+      function returnBtn() {
+        alert("Boas Compras!");
+        location.href = "PaginaInicial.html";
+      }
+
+      function changePhoto() {
+        const fileInput = document.getElementById("fileInput");
+        const photoPreview = document.getElementById("fotoUsuario");
+
+        const file = fileInput.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            photoPreview.src = e.target.result;
+            localStorage.setItem("fotoUsuario", e.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    </script>
+  </body>
+</html>
